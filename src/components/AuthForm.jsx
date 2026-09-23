@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useAuthAutomation } from '../context/AuthContext';
 
 export default function AuthForm() {
-  const { activeAuthData, loadExcelData } = useAuthAutomation();
+  // FIX: Pulling updateAuthModifiers to handle instant saves without full re-loading delays
+  const { activeAuthData, updateAuthModifiers } = useAuthAutomation();
   
   // Local state to manage live document overrides
   const [overrideData, setOverrideData] = useState({
@@ -11,8 +12,7 @@ export default function AuthForm() {
     denialReason: 'None'
   });
 
-  // FIX: Track a unique property key so the form doesn't auto-wipe your edits on save.
-  // Fallbacks check for common data layout configurations like 'id', 'claimId', or 'patientName'.
+  // Track a unique row ID so the form doesn't reset when you hit save
   const activeRecordId = activeAuthData?.id || activeAuthData?.claimId || activeAuthData?.patientName; 
 
   // Effect hook to sync local modifiers ONLY when switching to a completely different record
@@ -42,7 +42,9 @@ export default function AuthForm() {
       authStatus: overrideData.authStatus,
       clinicalNotes: overrideData.clinicalNotes
     };
-    loadExcelData(updatedPayload);
+    
+    // FIX: Using the instantaneous context updater method
+    updateAuthModifiers(updatedPayload);
   };
 
   return (
