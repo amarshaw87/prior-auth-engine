@@ -4,6 +4,7 @@ import useFaxFetch from './hooks/useFaxFetch'; // FIX: Pull in your advanced asy
 import ExcelForm from './components/ExcelForm';
 import AuthForm from './components/AuthForm';
 import FaxPreview from './components/FaxPreview';
+import './index.css';
 
 function Workspace() {
   const { clearWorkspace, activeAuthData } = useAuthAutomation();
