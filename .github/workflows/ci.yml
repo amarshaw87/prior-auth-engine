@@ -61,7 +61,7 @@ jobs:
     - name: Upload Production Artifacts
       uses: actions/upload-pages-artifact@v3
       with:
-        path: './dist' # Tells GitHub to upload your compiled Vite app
+        path: dist
 
     - name: Deploy to GitHub Pages Live
       id: deployment
