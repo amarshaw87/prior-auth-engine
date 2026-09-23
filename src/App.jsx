@@ -1,11 +1,15 @@
 import React from 'react';
 import { AuthAutomationProvider, useAuthAutomation } from './context/AuthContext';
+import useFaxFetch from './hooks/useFaxFetch'; // FIX: Pull in your advanced async data-scrubbing hook
 import ExcelForm from './components/ExcelForm';
 import AuthForm from './components/AuthForm';
 import FaxPreview from './components/FaxPreview';
 
 function Workspace() {
-  const { loadExcelData, clearWorkspace, activeAuthData } = useAuthAutomation();
+  const { clearWorkspace, activeAuthData } = useAuthAutomation();
+  
+  // FIX: Extract loading metrics and pipeline runners to drive your RCM data validation engine
+  const { processAndFetch, loading, error } = useFaxFetch();
 
   return (
     <div className="min-h-screen bg-gray-100 py-8 px-4 font-sans">
@@ -15,25 +19,32 @@ function Workspace() {
           <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">
             Prior Auth Initiation & Approval Engine
           </h1>
-          <p className="text-md text-gray-600 mt-2">
+          <p className="text-sm text-gray-600 mt-2">
             Designed by Amar Shaw • Blending RCM Operational Logic with Full-Stack Automation
           </p>
         </header>
 
         {/* Workspace Operations Grid */}
         <main className="space-y-6">
-          {/* Top Section: Excel Data Input */}
-          <ExcelForm onDataFetch={loadExcelData} />
+          {/* FIX: Route the Excel input simulator straight into our async scrubbing handler */}
+          <ExcelForm onDataFetch={processAndFetch} />
+
+          {/* Error Boundary Banner: Display clearinghouse pipe validation errors cleanly */}
+          {error && (
+            <div className="max-w-xl mx-auto p-3 bg-red-50 border border-red-200 rounded-md text-red-700 text-xs font-semibold text-center">
+              ⚠️ {error}
+            </div>
+          )}
 
           {/* Middle Section: Manual Overrides Panel */}
           <AuthForm />
 
           {/* Reset Workspace Controller Button */}
-          {activeAuthData && (
+          {activeAuthData && !loading && (
             <div className="text-center">
               <button
                 onClick={clearWorkspace}
-                className="text-sm font-medium text-red-600 hover:text-red-800 underline transition duration-150"
+                className="text-xs font-medium text-red-600 hover:text-red-800 underline transition duration-150"
               >
                 Clear Current Data Workspace
               </button>
