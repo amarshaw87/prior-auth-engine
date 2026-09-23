@@ -8,16 +8,23 @@ export default function useFaxFetch() {
 
   // Simulating an API call to scrub and map healthcare parameters
   const processAndFetch = async (rawData) => {
+    // Defend against null, undefined, or missing values to prevent app crashes
+    if (!rawData || !rawData.patientName || !rawData.insuranceId) {
+      setError('Invalid raw data: Patient Name and Insurance ID are required fields.');
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
     try {
-      // Simulate network latency (1.2 seconds)
+      // Simulate network latency (1.2 seconds) to process internal compliance schemas
       await new Promise((resolve) => setTimeout(resolve, 1200));
 
-      // Advanced data scrubbing logic (Simulating RCM code formatting)
+      // Advanced data scrubbing logic (Simulating RCM code formatting rules)
       const scrubbedData = {
         ...rawData,
+        id: rawData.id || `CLM-${Date.now()}`, // Fallback unique ID anchor matching workspace modifier rules
         patientName: rawData.patientName.trim().toUpperCase(),
         insuranceId: rawData.insuranceId.replace(/\s+/g, '').toUpperCase(),
         clearinghouseStatus: 'VERIFIED_DATA_STREAM',
