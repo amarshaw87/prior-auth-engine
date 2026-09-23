@@ -10,7 +10,7 @@ export default function FaxPreview() {
     return (
       <div className="p-8 bg-white border-2 border-dashed border-blue-300 rounded-lg text-center mt-6 shadow-sm">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-3"></div>
-        <p className="text-blue-600 font-medium">⚡ AUTOMATION ACTIVE: Extracting data array from Excel pipeline...</p>
+        <p className="text-blue-600 font-medium text-xs">⚡ AUTOMATION ACTIVE: Extracting data array from Excel pipeline...</p>
       </div>
     );
   }
@@ -19,27 +19,47 @@ export default function FaxPreview() {
   if (!activeAuthData) {
     return (
       <div className="p-8 bg-white border-2 border-dashed border-gray-300 rounded-lg text-center mt-6 shadow-sm">
-        <p className="text-gray-500 font-medium">📟 Fax Generator Standby</p>
-        <p className="text-xs text-gray-400 mt-1">Input row records in the controller panel to test single-click form population.</p>
+        <p className="text-gray-500 font-medium text-xs">📟 Fax Generator Standby</p>
+        <p className="text-xxs text-gray-400 mt-1">Input row records in the controller panel to test single-click form population.</p>
       </div>
     );
   }
 
-  // 3. Document printing pipeline controller
+  // 3. Isolated Document printing pipeline controller
   const handlePrintDocument = () => {
-    window.print();
+    const printableContent = printRef.current.innerHTML;
+    
+    // Create an isolated temporary iframe element to handle print isolation cleanly
+    const printWindow = window.open('', '_blank', 'width=800,height=900');
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>URGENT_MEDICAL_FAX_${activeAuthData.insuranceId || 'EXPORT'}</title>
+          <script src="https://tailwindcss.com"></script>
+          <style>
+            body { font-family: monospace; padding: 20px; color: #000; }
+            @page { size: letter; margin: 0; }
+          </style>
+        </head>
+        <body onload="window.print(); window.close();">
+          <div className="p-4">${printableContent}</div>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
   };
 
   return (
     <div className="mt-6 max-w-2xl mx-auto space-y-4">
       {/* Action Bar Container */}
-      <div className="flex justify-between items-center bg-gray-800 p-3 rounded-lg text-white shadow">
-        <span className="text-xs font-semibold tracking-wider uppercase text-green-400 flex items-center gap-1">
-          ● Standard Fax Render Ready
+      <div className="flex justify-between items-center bg-gray-800 p-3 rounded-lg text-white shadow print:hidden">
+        <span className="text-xs font-semibold tracking-wider uppercase text-green-400 flex items-center gap-1.5">
+          <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse"></span>
+          Standard Fax Render Ready
         </span>
         <button 
           onClick={handlePrintDocument}
-          className="bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-4 rounded text-xs transition duration-150 shadow"
+          className="bg-green-600 hover:bg-green-700 text-white font-bold py-1.5 px-4 rounded text-xs transition duration-150 shadow transform active:scale-95"
         >
           🖨️ Print / Save to PDF
         </button>
@@ -48,7 +68,7 @@ export default function FaxPreview() {
       {/* Main Medical Fax Document Container */}
       <div 
         ref={printRef}
-        className="p-8 bg-white border border-gray-400 rounded-none shadow-md font-mono text-gray-900 text-xs leading-relaxed print:p-0 print:border-0 print:shadow-none"
+        className="p-8 bg-white border border-gray-400 rounded-none shadow-md font-mono text-gray-900 text-xs leading-relaxed"
         id="printable-medical-fax"
       >
         {/* Fax Header Blocks */}
@@ -64,7 +84,7 @@ export default function FaxPreview() {
           <div><span className="font-bold">[03] SENDER ID:</span> RCM-WORKSHOP-AUTO</div>
           <div><span className="font-bold">[04] OPERATOR CODE:</span> AS-87</div>
           <div className="col-span-2 border-t border-gray-300 pt-2">
-            <span className="font-bold">[05] TRANSACTION TYPE:</span> <span className="underline font-black">{activeAuthData.authType.toUpperCase()} INITIATION</span>
+            <span className="font-bold">[05] TRANSACTION TYPE:</span> <span className="underline font-black">{(activeAuthData.authType || 'Prior Auth').toUpperCase()} INITIATION</span>
           </div>
         </div>
 
@@ -84,8 +104,9 @@ export default function FaxPreview() {
             <span>GRP-99482-KOL</span>
           </div>
           <div>
-            <label className="block text-xxs font-bold text-gray-500 uppercase">[09] Coverage Status Hook</label>
-            <span className="text-green-700 font-bold">ACTIVE PIPELINE</span>
+            <label className="block text-xxs font-bold text-gray-500 uppercase">[09] Workstation Process State</label>
+            {/* FIX: Bind to dynamic state status passed from AuthForm overrides */}
+            <span className="text-blue-700 font-bold uppercase">{activeAuthData.authStatus || 'PENDING INITIAL REVIEW'}</span>
           </div>
         </div>
 
@@ -100,13 +121,16 @@ export default function FaxPreview() {
             <label className="block text-xxs font-bold text-gray-500 uppercase">[11] Priority Assessment Level</label>
             <span>STAT / HIGH PRIORITY</span>
           </div>
-          <div>
-            <label className="block text-xxs font-bold text-gray-500 uppercase">[12] Historical Audit Bench</label>
-            <span>Sunknowledge 50/Day Pipeline Metric Passed</span>
+          <div className="col-span-2 border-t border-gray-200 pt-2">
+            <label className="block text-xxs font-bold text-gray-500 uppercase">[12] Dynamic Clinical Override Notes</label>
+            {/* FIX: Render dynamic user administrative overrides from our workstations */}
+            <p className="font-mono text-gray-700 bg-white p-2 border border-dashed border-gray-300 rounded whitespace-pre-wrap min-h-[40px]">
+              {activeAuthData.clinicalNotes || 'No custom administrative clinical reference hashes have been appended to this runtime instance.'}
+            </p>
           </div>
-          <div>
+          <div className="col-span-2 border-t border-gray-200 pt-2">
             <label className="block text-xxs font-bold text-gray-500 uppercase">[13] Processing Target Unit</label>
-            <span>NextZen Minds Core Integration Suite</span>
+            <span className="text-gray-600">Sunknowledge 50/Day Pipeline Metric Passed // NextZen Minds Suite</span>
           </div>
         </div>
 
@@ -119,4 +143,3 @@ export default function FaxPreview() {
     </div>
   );
 }
-
