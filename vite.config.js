@@ -4,12 +4,13 @@ import react from '@vitejs/plugin-react';
 // https://vitejs.dev
 export default defineConfig({
   plugins: [react()],
+  base: '/prior-auth-engine/', // 👈 CRUCIAL: Tell Vite your exact repository name for GitHub Pages
   server: {
-    port: 3000, // Forces the local server to run on port 3000
-    open: true  // Automatically opens the workspace in your browser on launch
+    port: 3000,
+    open: true
   },
   build: {
     outDir: 'dist',
-    sourcemap: false // Keeps production bundles compact and high-performance
+    sourcemap: false
   }
 });
