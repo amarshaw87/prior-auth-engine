@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuthAutomation } from '../context/AuthContext';
 
 export default function AuthForm() {
-  // FIX: Pulling updateAuthModifiers to handle instant saves without full re-loading delays
+  // Pulling the new updateAuthModifiers function to handle instant data updates
   const { activeAuthData, updateAuthModifiers } = useAuthAutomation();
   
   // Local state to manage live document overrides
@@ -12,7 +12,7 @@ export default function AuthForm() {
     denialReason: 'None'
   });
 
-  // Track a unique row ID so the form doesn't reset when you hit save
+  // Track a unique record ID so the form inputs don't auto-wipe when you click save
   const activeRecordId = activeAuthData?.id || activeAuthData?.claimId || activeAuthData?.patientName; 
 
   // Effect hook to sync local modifiers ONLY when switching to a completely different record
@@ -43,7 +43,7 @@ export default function AuthForm() {
       clinicalNotes: overrideData.clinicalNotes
     };
     
-    // FIX: Using the instantaneous context updater method
+    // Using the instantaneous modifier function instead of triggering the slow loading delay
     updateAuthModifiers(updatedPayload);
   };
 
