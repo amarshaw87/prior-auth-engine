@@ -1,6 +1,7 @@
 import React from 'react';
+import ReactDOM from 'react-dom/client'; // <-- ADDED FOR MOUNT PIPELINE
 import { AuthAutomationProvider, useAuthAutomation } from './context/AuthContext';
-import useFaxFetch from './hooks/useFaxFetch'; // FIX: Pull in your advanced async data-scrubbing hook
+import useFaxFetch from './hooks/useFaxFetch'; 
 import ExcelForm from './components/ExcelForm';
 import AuthForm from './components/AuthForm';
 import FaxPreview from './components/FaxPreview';
@@ -8,8 +9,6 @@ import './index.css';
 
 function Workspace() {
   const { clearWorkspace, activeAuthData } = useAuthAutomation();
-  
-  // FIX: Extract loading metrics and pipeline runners to drive your RCM data validation engine
   const { processAndFetch, loading, error } = useFaxFetch();
 
   return (
@@ -27,20 +26,16 @@ function Workspace() {
 
         {/* Workspace Operations Grid */}
         <main className="space-y-6">
-          {/* FIX: Route the Excel input simulator straight into our async scrubbing handler */}
           <ExcelForm onDataFetch={processAndFetch} />
 
-          {/* Error Boundary Banner: Display clearinghouse pipe validation errors cleanly */}
           {error && (
             <div className="max-w-xl mx-auto p-3 bg-red-50 border border-red-200 rounded-md text-red-700 text-xs font-semibold text-center">
               ⚠️ {error}
             </div>
           )}
 
-          {/* Middle Section: Manual Overrides Panel */}
           <AuthForm />
 
-          {/* Reset Workspace Controller Button */}
           {activeAuthData && !loading && (
             <div className="text-center">
               <button
@@ -52,7 +47,6 @@ function Workspace() {
             </div>
           )}
 
-          {/* Bottom Section: Document Generator Output */}
           <section className="mt-8">
             <FaxPreview />
           </section>
@@ -62,11 +56,19 @@ function Workspace() {
   );
 }
 
-// Final wrapper linking everything to your context blueprint
-export default function App() {
+// Core wrapper linking everything to your context blueprint
+export function App() {
   return (
     <AuthAutomationProvider>
       <Workspace />
     </AuthAutomationProvider>
   );
 }
+
+// FIX: Initialize the React DOM mounting layer directly inside the entry file
+// This mounts the application into the root div container so it renders on screen.
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
