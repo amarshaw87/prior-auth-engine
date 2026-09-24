@@ -57,7 +57,8 @@ function Workspace() {
 }
 
 // Core wrapper linking everything to your context blueprint
-export function App() {
+// Core wrapper linking everything to your context blueprint
+export default function App() {
   return (
     <AuthAutomationProvider>
       <Workspace />
@@ -65,10 +66,13 @@ export function App() {
   );
 }
 
-// FIX: Initialize the React DOM mounting layer directly inside the entry file
-// This mounts the application into the root div container so it renders on screen.
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+// FIX: Initialize the React DOM mounting layer safely with a null-check
+const container = document.getElementById('root');
+if (container) {
+  ReactDOM.createRoot(container).render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  );
+}
+
