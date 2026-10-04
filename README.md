@@ -61,24 +61,39 @@ src/
 ```
 
 
-#⚙️ Advanced Engineering Highlights
+---
 
-​Global Event State Orchestration: Uses the React Context API to manage real-time tracking across deeply nested components without prop-drilling vulnerabilities or state desynchronization.
-​Dynamic Workstation Overrides: Real-time mutation of denial statuses and clinical audit notes reflected immediately on the live manifest canvas.
-​Race-Condition Shielding: Implements React useRef tracking to shield against asynchronous execution collisions during rapid user triggers.
-​CSS Print Media Optimization: Strict @media print boundary isolation ensuring only the standardized Letter-size medical manifest exports to PDF while automatically stripping UI controls.
-​🚀 Execution & Deployment Commands
-​To run this engine locally:
+## ⚙️ ADVANCED ENGINEERING HIGHLIGHTS
 
-```text
+* **Global Event State Orchestration:**  
+  Uses the React Context API to manage real-time tracking across deeply nested components without prop-drilling vulnerabilities or state desynchronization.
+
+* **Dynamic Workstation Overrides:**  
+  Real-time mutation of denial statuses and clinical audit notes reflected immediately on the live manifest canvas.
+
+* **Race-Condition Shielding:**  
+  Implements React `useRef` tracking to shield against asynchronous execution collisions during rapid user triggers.
+
+* **CSS Print Media Optimization:**  
+  Strict `@media print` boundary isolation ensuring only the standardized Letter-size medical manifest exports to PDF while automatically stripping UI controls.
+
+---
+
+## 🚀 EXECUTION & DEPLOYMENT COMMANDS
+
+To run this engine locally:
+
+```bash
 # 1. Install dependencies
 npm install
 
 # 2. Start Vite development server
 npm run dev
-```
 
 
-👨‍💻 Designed & Developed by
+---
+
+## 👨‍💻 DESIGNED & DEVELOPED BY
 ​Amar Shaw
-Prior Authorization & RCM Specialist • Full-Stack Web Developer
+​Prior Authorization & RCM Specialist • Full-Stack Web Developer
+​Transforming US Healthcare Operational Friction into High-Velocity Web Automation.
