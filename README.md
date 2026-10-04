@@ -58,9 +58,11 @@ src/
 │   └── AuthContext.jsx     # Global state highway managing runtime payloads
 └── hooks/
     └── useFaxFetch.js      # Asynchronous validation & data-stream clearinghouse
+```
 
 
-⚙️ Advanced Engineering Highlights
+#⚙️ Advanced Engineering Highlights
+
 ​Global Event State Orchestration: Uses the React Context API to manage real-time tracking across deeply nested components without prop-drilling vulnerabilities or state desynchronization.
 ​Dynamic Workstation Overrides: Real-time mutation of denial statuses and clinical audit notes reflected immediately on the live manifest canvas.
 ​Race-Condition Shielding: Implements React useRef tracking to shield against asynchronous execution collisions during rapid user triggers.
@@ -68,12 +70,13 @@ src/
 ​🚀 Execution & Deployment Commands
 ​To run this engine locally:
 
+```text
 # 1. Install dependencies
 npm install
 
 # 2. Start Vite development server
 npm run dev
-
+```
 
 
 👨‍💻 Designed & Developed by
