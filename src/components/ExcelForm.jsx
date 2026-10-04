@@ -1,22 +1,17 @@
 import React, { useState } from 'react';
 
 export default function ExcelForm({ onDataFetch }) {
-  const [patientName, setPatientName] = useState('Amar Shaw');
-  const [policyId, setPolicyId] = useState('H12345678');
+  const [patientName, setPatientName] = useState('');
+  const [policyId, setPolicyId] = useState('');
   const [authType, setAuthType] = useState('Prior Auth');
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (onDataFetch) {
-      // Pass both camelCase and snake_case to satisfy all hook validation rules
       onDataFetch({
         patientName: patientName.trim(),
         policyId: policyId.trim(),
-        authType: authType,
-        patient_name: patientName.trim(),
-        insurance_id: policyId.trim(),
-        name: patientName.trim(),
-        id: policyId.trim()
+        authType: authType
       });
     }
   };
@@ -41,7 +36,7 @@ export default function ExcelForm({ onDataFetch }) {
             value={patientName}
             onChange={(e) => setPatientName(e.target.value)}
             className="w-full px-3.5 py-2.5 bg-[#070A12] border border-slate-700 rounded-xl text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-150"
-            placeholder="Amar Shaw"
+            placeholder="e.g. John Doe"
           />
         </div>
 
@@ -54,7 +49,7 @@ export default function ExcelForm({ onDataFetch }) {
             value={policyId}
             onChange={(e) => setPolicyId(e.target.value)}
             className="w-full px-3.5 py-2.5 bg-[#070A12] border border-slate-700 rounded-xl text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-150"
-            placeholder="H12345678"
+            placeholder="e.g. BCBS-987654"
           />
         </div>
 
@@ -85,3 +80,4 @@ export default function ExcelForm({ onDataFetch }) {
     </div>
   );
 }
+
