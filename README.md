@@ -79,8 +79,6 @@ src/
 
 ---
 
----
-
 ## 🚀 EXECUTION & DEPLOYMENT COMMANDS
 
 To run this engine locally:
@@ -93,9 +91,15 @@ npm install
 npm run dev
 ```
 
+---
 
-
-#👨‍💻 DESIGNED & DEVELOPED BY
-**​Amar Shaw
-​Prior Authorization & RCM Specialist • Full-Stack Web Developer
+<hr />
+​<br />
+​👨‍💻 DESIGNED & DEVELOPED BY
+​<b>Amar Shaw</b>
+​<b>Prior Authorization & RCM Specialist • Full-Stack Web Developer</b>
+​<br />
 ​Transforming US Healthcare Operational Friction into High-Velocity Web Automation.
+
+
+
