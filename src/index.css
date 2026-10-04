@@ -2,4 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Force deployment pipeline to flush cache settings */
+@keyframes textShimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.animate-shimmer {
+  background-size: 200% auto;
+  animation: textShimmer 4s linear infinite;
+}
