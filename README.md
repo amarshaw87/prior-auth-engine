@@ -79,6 +79,8 @@ src/
 
 ---
 
+---
+
 ## 🚀 EXECUTION & DEPLOYMENT COMMANDS
 
 To run this engine locally:
@@ -89,11 +91,11 @@ npm install
 
 # 2. Start Vite development server
 npm run dev
+```
 
 
----
 
-## 👨‍💻 DESIGNED & DEVELOPED BY
-​Amar Shaw
+#👨‍💻 DESIGNED & DEVELOPED BY
+**​Amar Shaw
 ​Prior Authorization & RCM Specialist • Full-Stack Web Developer
 ​Transforming US Healthcare Operational Friction into High-Velocity Web Automation.
