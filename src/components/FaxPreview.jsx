@@ -1,143 +1,82 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { useAuthAutomation } from '../context/AuthContext';
 
 export default function FaxPreview() {
-  const { activeAuthData, isAutomating } = useAuthAutomation();
-  const printRef = useRef();
+  const { activeAuthData } = useAuthAutomation();
 
-  // 1. Loading states during extraction sequence
-  if (isAutomating) {
-    return (
-      <div className="p-8 bg-white border-2 border-dashed border-blue-300 rounded-lg text-center mt-6 shadow-sm">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-3"></div>
-        <p className="text-blue-600 font-medium text-xs">⚡ AUTOMATION ACTIVE: Extracting data array from Excel pipeline...</p>
-      </div>
-    );
-  }
-
-  // 2. Empty state before pipeline activation
-  if (!activeAuthData) {
-    return (
-      <div className="p-8 bg-white border-2 border-dashed border-gray-300 rounded-lg text-center mt-6 shadow-sm">
-        <p className="text-gray-500 font-medium text-xs">📟 Fax Generator Standby</p>
-        <p className="text-xxs text-gray-400 mt-1">Input row records in the controller panel to test single-click form population.</p>
-      </div>
-    );
-  }
-
-  // 3. Isolated Document printing pipeline controller
-  const handlePrintDocument = () => {
-    const printableContent = printRef.current.innerHTML;
-    
-    // Create an isolated temporary iframe element to handle print isolation cleanly
-    const printWindow = window.open('', '_blank', 'width=800,height=900');
-    printWindow.document.write(`
-      <html>
-        <head>
-          <title>URGENT_MEDICAL_FAX_${activeAuthData.insuranceId || 'EXPORT'}</title>
-          <script src="https://tailwindcss.com"></script>
-          <style>
-            body { font-family: monospace; padding: 20px; color: #000; }
-            @page { size: letter; margin: 0; }
-          </style>
-        </head>
-        <body onload="window.print(); window.close();">
-          <div className="p-4">${printableContent}</div>
-        </body>
-      </html>
-    `);
-    printWindow.document.close();
+  const handlePrint = () => {
+    window.print();
   };
 
+  // POLISHED DARK STANDBY CONTAINER (NO WHITE BOX)
+  if (!activeAuthData) {
+    return (
+      <div className="bg-[#0A0E1A]/80 border border-dashed border-slate-800 rounded-2xl p-8 text-center backdrop-blur-sm transition-all duration-300">
+        <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-900 border border-slate-800 text-indigo-400 mb-3 shadow-[0_0_15px_rgba(99,102,241,0.15)]">
+          📟
+        </div>
+        <div className="text-sm font-semibold text-slate-200 tracking-wide flex items-center justify-center gap-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-ping"></span>
+          Fax Generator Standby
+        </div>
+        <p className="text-xs text-slate-500 mt-2 max-w-sm mx-auto">
+          Input row records in the controller panel to test single-click payload compilation.
+        </p>
+      </div>
+    );
+  }
+
+  // GENERATED MANIFEST STATE
   return (
-    <div className="mt-6 max-w-2xl mx-auto space-y-4">
-      {/* Action Bar Container */}
-      <div className="flex justify-between items-center bg-gray-800 p-3 rounded-lg text-white shadow print:hidden">
-        <span className="text-xs font-semibold tracking-wider uppercase text-green-400 flex items-center gap-1.5">
-          <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse"></span>
-          Standard Fax Render Ready
-        </span>
-        <button 
-          onClick={handlePrintDocument}
-          className="bg-green-600 hover:bg-green-700 text-white font-bold py-1.5 px-4 rounded text-xs transition duration-150 shadow transform active:scale-95"
+    <div className="space-y-4">
+      <div className="flex items-center justify-between bg-[#0E1424] border border-slate-800/80 px-4 py-3 rounded-xl shadow-lg">
+        <div className="flex items-center gap-2">
+          <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span className="text-xs font-mono font-bold tracking-wider text-emerald-400">
+            STANDARD FAX RENDER READY
+          </span>
+        </div>
+        <button
+          onClick={handlePrint}
+          className="px-4 py-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-semibold rounded-lg shadow-[0_0_15px_rgba(16,185,129,0.4)] transition duration-150 flex items-center gap-1.5"
         >
-          🖨️ Print / Save to PDF
+          <span>🖨️</span>
+          <span>Print / Save to PDF</span>
         </button>
       </div>
 
-      {/* Main Medical Fax Document Container */}
-      <div 
-        ref={printRef}
-        className="p-8 bg-white border border-gray-400 rounded-none shadow-md font-mono text-gray-900 text-xs leading-relaxed"
-        id="printable-medical-fax"
-      >
-        {/* Fax Header Blocks */}
-        <div className="border-b-4 border-black pb-4 mb-6 text-center">
-          <h2 className="text-2xl font-black tracking-tighter uppercase">URGENT MEDICAL INSURANCE FAX TRANSITION</h2>
-          <p className="text-xxs tracking-widest text-gray-600 mt-1">SECURE HEALTHCARE WORKFLOW AUTOMATION PIPELINE MODULE</p>
+      {/* Retro-Clinical Manifest Sheet */}
+      <div className="bg-white text-slate-950 p-8 rounded-xl font-mono text-xs border border-slate-200 shadow-2xl print:m-0 print:border-none">
+        <div className="border-b-2 border-slate-950 pb-4 text-center">
+          <h2 className="text-xl font-black tracking-tight">URGENT MEDICAL INSURANCE FAX TRANSITION</h2>
+          <p className="text-[10px] text-slate-600 mt-1">SECURE HEALTHCARE WORKFLOW AUTOMATION PIPELINE MODULE</p>
         </div>
 
-        {/* 15-Field Structured Data Layout Map */}
-        <div className="grid grid-cols-2 gap-x-6 gap-y-3 border border-black p-4 bg-gray-50 mb-6">
-          <div><span className="font-bold">[01] DATE GENERATED:</span> {new Date().toLocaleDateString()}</div>
-          <div><span className="font-bold">[02] TIME STAMP:</span> {new Date().toLocaleTimeString()}</div>
-          <div><span className="font-bold">[03] SENDER ID:</span> RCM-WORKSHOP-AUTO</div>
-          <div><span className="font-bold">[04] OPERATOR CODE:</span> AS-87</div>
-          <div className="col-span-2 border-t border-gray-300 pt-2">
-            <span className="font-bold">[05] TRANSACTION TYPE:</span> <span className="underline font-black">{(activeAuthData.authType || 'Prior Auth').toUpperCase()} INITIATION</span>
-          </div>
+        <div className="grid grid-cols-2 gap-3 py-4 border-b border-slate-300 text-[11px]">
+          <div>[01] DATE GENERATED: 05/10/2026</div>
+          <div>[02] TIME STAMP: 02:10:00</div>
+          <div>[03] SENDER ID: RCM-WORKSHOP-AUTO</div>
+          <div>[04] OPERATOR CODE: AS-87</div>
+          <div className="col-span-2">[05] TRANSACTION TYPE: {activeAuthData.authType?.toUpperCase() || 'PRIOR AUTH'}</div>
         </div>
 
-        {/* Clinical Patient Segment Section */}
-        <h4 className="text-sm font-black border-b-2 border-black pb-1 mb-3 uppercase">SECTION A: INSURED PATIENT MANIFEST</h4>
-        <div className="grid grid-cols-2 gap-4 border border-black p-4 mb-6">
-          <div>
-            <label className="block text-xxs font-bold text-gray-500 uppercase">[06] Patient Name Field</label>
-            <span className="text-sm font-bold tracking-tight">{activeAuthData.patientName}</span>
-          </div>
-          <div>
-            <label className="block text-xxs font-bold text-gray-500 uppercase">[07] Insurance Policy ID Number</label>
-            <span className="text-sm font-bold tracking-mono text-blue-800">{activeAuthData.insuranceId}</span>
-          </div>
-          <div>
-            <label className="block text-xxs font-bold text-gray-500 uppercase">[08] Primary Group ID Code</label>
-            <span>GRP-99482-KOL</span>
-          </div>
-          <div>
-            <label className="block text-xxs font-bold text-gray-500 uppercase">[09] Workstation Process State</label>
-            {/* FIX: Bind to dynamic state status passed from AuthForm overrides */}
-            <span className="text-blue-700 font-bold uppercase">{activeAuthData.authStatus || 'PENDING INITIAL REVIEW'}</span>
+        <div className="py-4 border-b border-slate-300 space-y-2">
+          <div className="font-bold text-[11px]">SECTION A: INSURED PATIENT MANIFEST</div>
+          <div className="grid grid-cols-2 gap-2 text-[11px] bg-slate-50 p-3 rounded border border-slate-200">
+            <div>[06] PATIENT NAME: <span className="font-bold">{activeAuthData.patientName}</span></div>
+            <div>[07] POLICY ID: <span className="font-bold">{activeAuthData.policyId}</span></div>
+            <div>[08] PRIMARY GROUP: GRP-99482-KOL</div>
+            <div>[09] PROCESS STATE: <span className="font-bold text-indigo-700">{activeAuthData.trackingStatus || 'PENDING REVIEW'}</span></div>
           </div>
         </div>
 
-        {/* Operational Core Audit Section */}
-        <h4 className="text-sm font-black border-b-2 border-black pb-1 mb-3 uppercase">SECTION B: CLAIMS AUDIT & DENIAL TRACKING</h4>
-        <div className="grid grid-cols-2 gap-4 border border-black p-4 mb-6">
-          <div>
-            <label className="block text-xxs font-bold text-gray-500 uppercase">[10] Current Denial Status</label>
-            <span className="font-bold text-red-600">{activeAuthData.denialReason || 'None'}</span>
+        <div className="py-4 space-y-2">
+          <div className="font-bold text-[11px]">SECTION B: CLAIMS AUDIT & DENIAL TRACKING</div>
+          <div className="text-[10px] text-slate-700 bg-slate-50 p-3 rounded border border-slate-200 space-y-1">
+            <div>[10] CURRENT DENIAL STATUS: {activeAuthData.denialContext || 'None'}</div>
+            <div>[11] PRIORITY LEVEL: STAT / HIGH PRIORITY</div>
+            <div className="pt-2 text-slate-500">[12] AUDIT NOTES: {activeAuthData.clinicalNotes || 'No custom notes.'}</div>
           </div>
-          <div>
-            <label className="block text-xxs font-bold text-gray-500 uppercase">[11] Priority Assessment Level</label>
-            <span>STAT / HIGH PRIORITY</span>
-          </div>
-          <div className="col-span-2 border-t border-gray-200 pt-2">
-            <label className="block text-xxs font-bold text-gray-500 uppercase">[12] Dynamic Clinical Override Notes</label>
-            {/* FIX: Render dynamic user administrative overrides from our workstations */}
-            <p className="font-mono text-gray-700 bg-white p-2 border border-dashed border-gray-300 rounded whitespace-pre-wrap min-h-[40px]">
-              {activeAuthData.clinicalNotes || 'No custom administrative clinical reference hashes have been appended to this runtime instance.'}
-            </p>
-          </div>
-          <div className="col-span-2 border-t border-gray-200 pt-2">
-            <label className="block text-xxs font-bold text-gray-500 uppercase">[13] Processing Target Unit</label>
-            <span className="text-gray-600">Sunknowledge 50/Day Pipeline Metric Passed // NextZen Minds Suite</span>
-          </div>
-        </div>
-
-        {/* Footer Audit Compliance Track Verification */}
-        <div className="border-t-2 border-black pt-4 text-center text-xxs text-gray-500 space-y-1">
-          <p>[14] COMPLIANCE NOTICE: This document handles confidential medical processing metrics.</p>
-          <p>[15] SYSTEM TRACKING HASH: SHA256-REACT-CONTEXT-API-VERIFIED-DATA-STREAM-AMAR-SHAW-87</p>
         </div>
       </div>
     </div>
