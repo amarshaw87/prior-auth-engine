@@ -91,15 +91,11 @@ npm install
 npm run dev
 ```
 
----
 
-<hr />
-​<br />
+<br />
 ​👨‍💻 DESIGNED & DEVELOPED BY
 ​<b>Amar Shaw</b>
 ​<b>Prior Authorization & RCM Specialist • Full-Stack Web Developer</b>
 ​<br />
 ​Transforming US Healthcare Operational Friction into High-Velocity Web Automation.
-
-
 
