@@ -1,14 +1,23 @@
 import React, { useState } from 'react';
 
 export default function ExcelForm({ onDataFetch }) {
-  const [patientName, setPatientName] = useState('John Doe');
-  const [policyId, setPolicyId] = useState('BCBS-987654');
+  const [patientName, setPatientName] = useState('Amar Shaw');
+  const [policyId, setPolicyId] = useState('H12345678');
   const [authType, setAuthType] = useState('Prior Auth');
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (onDataFetch) {
-      onDataFetch({ patientName, policyId, authType });
+      // Pass both camelCase and snake_case to satisfy all hook validation rules
+      onDataFetch({
+        patientName: patientName.trim(),
+        policyId: policyId.trim(),
+        authType: authType,
+        patient_name: patientName.trim(),
+        insurance_id: policyId.trim(),
+        name: patientName.trim(),
+        id: policyId.trim()
+      });
     }
   };
 
@@ -32,7 +41,7 @@ export default function ExcelForm({ onDataFetch }) {
             value={patientName}
             onChange={(e) => setPatientName(e.target.value)}
             className="w-full px-3.5 py-2.5 bg-[#070A12] border border-slate-700 rounded-xl text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-150"
-            placeholder="John Doe"
+            placeholder="Amar Shaw"
           />
         </div>
 
@@ -45,7 +54,7 @@ export default function ExcelForm({ onDataFetch }) {
             value={policyId}
             onChange={(e) => setPolicyId(e.target.value)}
             className="w-full px-3.5 py-2.5 bg-[#070A12] border border-slate-700 rounded-xl text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-150"
-            placeholder="BCBS-987654"
+            placeholder="H12345678"
           />
         </div>
 
@@ -64,7 +73,7 @@ export default function ExcelForm({ onDataFetch }) {
           </select>
         </div>
 
-        {/* Glow Action Button (Screenshot Style) */}
+        {/* Glow Action Button */}
         <button
           type="submit"
           className="w-full mt-2 py-3 px-4 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-blue-600 via-indigo-600 to-indigo-500 hover:from-blue-500 hover:to-indigo-500 shadow-[0_0_25px_rgba(99,102,241,0.45)] hover:shadow-[0_0_35px_rgba(99,102,241,0.65)] transition-all duration-200 active:scale-[0.99] flex items-center justify-center gap-2"
@@ -76,4 +85,3 @@ export default function ExcelForm({ onDataFetch }) {
     </div>
   );
 }
-
