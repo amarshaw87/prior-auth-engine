@@ -11,17 +11,21 @@ function Workspace() {
   const { processAndFetch, loading, error } = useFaxFetch();
 
   return (
-    <div className="min-h-screen bg-[#070A12] text-slate-100 py-10 px-4 font-sans selection:bg-indigo-500 selection:text-white">
+    <div className="min-h-screen bg-[#06080F] text-slate-100 py-10 px-4 font-sans selection:bg-indigo-500 selection:text-white">
       <div className="max-w-4xl mx-auto space-y-8">
-        {/* Header Section */}
+        
+        {/* Header Section with Traveling Light Effect */}
         <header className="text-center space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-mono font-medium tracking-wide">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs font-mono font-medium tracking-wide shadow-[0_0_15px_rgba(99,102,241,0.2)]">
             <span className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></span>
             ENTERPRISE RCM PIPELINE v1.0
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-indigo-200">
+
+          {/* Continuous Light Shimmer Heading */}
+          <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-transparent bg-clip-text bg-[linear-gradient(110deg,#64748b,35%,#ffffff,50%,#818cf8,55%,#64748b,70%)] animate-shimmer">
             Prior Auth Initiation & Approval Engine
           </h1>
+
           <p className="text-xs sm:text-sm text-slate-400 max-w-xl mx-auto">
             Designed by Amar Shaw • Blending US Healthcare Operational Logic with Full-Stack Automation
           </p>
@@ -33,7 +37,7 @@ function Workspace() {
 
           {error && (
             <div className="max-w-xl mx-auto p-3.5 bg-red-950/40 border border-red-500/30 rounded-xl text-red-300 text-xs font-semibold text-center backdrop-blur-sm">
-              ⚠️ {error}
+              ⚠️️ {error}
             </div>
           )}
 
