@@ -92,10 +92,10 @@ npm run dev
 ```
 
 
-<br />
-​👨‍💻 DESIGNED & DEVELOPED BY
-​<b>Amar Shaw</b>
-​<b>Prior Authorization & RCM Specialist • Full-Stack Web Developer</b>
+
+
+<h2>👨‍💻 DESIGNED & DEVELOPED BY</h2>
+​<h1>Amar Shaw</h1>
+​<h3>Prior Authorization & RCM Specialist • Full-Stack Web Developer</h3>
 ​<br />
 ​Transforming US Healthcare Operational Friction into High-Velocity Web Automation.
-
