@@ -2,9 +2,16 @@ import React from 'react';
 import { useAuthAutomation } from '../context/AuthContext';
 
 export default function AuthForm() {
-  const { activeAuthData, updateAuthField } = useAuthAutomation();
+  const { activeAuthData, updateAuthModifiers } = useAuthAutomation();
 
   if (!activeAuthData) return null;
+
+  const handleChange = (field, value) => {
+    updateAuthModifiers({
+      ...activeAuthData,
+      [field]: value
+    });
+  };
 
   return (
     <div className="bg-[#0E1424]/90 border border-slate-800/80 rounded-2xl p-6 shadow-2xl backdrop-blur-md">
@@ -23,7 +30,7 @@ export default function AuthForm() {
           </label>
           <select
             value={activeAuthData.trackingStatus || 'Pending Review'}
-            onChange={(e) => updateAuthField('trackingStatus', e.target.value)}
+            onChange={(e) => handleChange('trackingStatus', e.target.value)}
             className="w-full px-3.5 py-2.5 bg-[#070A12] border border-slate-700 rounded-xl text-amber-400 font-medium text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
           >
             <option value="Pending Review">Pending Review</option>
@@ -40,7 +47,7 @@ export default function AuthForm() {
           <input
             type="text"
             value={activeAuthData.denialContext || ''}
-            onChange={(e) => updateAuthField('denialContext', e.target.value)}
+            onChange={(e) => handleChange('denialContext', e.target.value)}
             placeholder="None"
             className="w-full px-3.5 py-2.5 bg-[#070A12] border border-slate-700 rounded-xl text-slate-200 placeholder-slate-500 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
           />
@@ -53,7 +60,7 @@ export default function AuthForm() {
           <textarea
             rows="3"
             value={activeAuthData.clinicalNotes || ''}
-            onChange={(e) => updateAuthField('clinicalNotes', e.target.value)}
+            onChange={(e) => handleChange('clinicalNotes', e.target.value)}
             placeholder="Enter workflow updates or retro-authorization reference hashes..."
             className="w-full px-3.5 py-2.5 bg-[#070A12] border border-slate-700 rounded-xl text-slate-200 placeholder-slate-500 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 resize-none"
           />
