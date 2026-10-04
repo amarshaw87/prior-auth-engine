@@ -1,127 +1,79 @@
 import React, { useState } from 'react';
-import { useAuthAutomation } from '../context/AuthContext'; // FIX: Bring in your global state workspace
 
-export default function ExcelForm() {
-  // FIX: Access the central loading pipeline directly from your custom hook
-  const { loadExcelData } = useAuthAutomation();
+export default function ExcelForm({ onDataFetch }) {
+  const [patientName, setPatientName] = useState('John Doe');
+  const [policyId, setPolicyId] = useState('BCBS-987654');
+  const [authType, setAuthType] = useState('Prior Auth');
 
-  // 1. Simulating an Excel row data state
-  const [excelRow, setExcelRow] = useState({
-    patientName: '',
-    insuranceId: '',
-    authType: 'Prior Auth', 
-    denialReason: 'None'
-  });
-
-  // 2. Handling controlled input changes safely
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setExcelRow((prev) => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  // 3. Triggering the "One-Click Fax Fetch" simulation
-  const handleTriggerAutomation = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    
-    // Core data sanitation (simulate internal useFaxFetch string cleaning rules)
-    const sanitizedPatientName = excelRow.patientName.trim();
-    const sanitizedInsuranceId = excelRow.insuranceId.trim().toUpperCase();
-
-    if (!sanitizedPatientName || !sanitizedInsuranceId) {
-      alert("Please fill in the Excel row data to simulate fetching!");
-      return;
+    if (onDataFetch) {
+      onDataFetch({ patientName, policyId, authType });
     }
-
-    // Building the sanitized payload complete with matching override hooks for AuthForm.jsx
-    const finalizedPayload = {
-      ...excelRow,
-      id: `CLM-${Date.now()}`, // Generating a temporary unique tracking ID for our new useEffect hooks
-      patientName: sanitizedPatientName,
-      insuranceId: sanitizedInsuranceId,
-      authStatus: 'Pending Review', // Populating structural defaults for downstream workstations
-      clinicalNotes: ''
-    };
-
-    // Sending the mapped data straight up into the global context pipeline safely
-    loadExcelData(finalizedPayload);
-    
-    // Optional: Reset inputs to allow operators to process another row
-    setExcelRow({
-      patientName: '',
-      insuranceId: '',
-      authType: 'Prior Auth',
-      denialReason: 'None'
-    });
   };
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md border border-gray-200 max-w-xl mx-auto mt-6">
-      <div className="flex items-center gap-2 mb-3">
-        <span className="flex h-2 w-2 rounded-full bg-blue-500"></span>
-        <h3 className="text-xl font-bold text-gray-800">📊 Excel Data Pipeline Simulator</h3>
+    <div className="bg-[#0E1424]/90 border border-slate-800/80 rounded-2xl p-6 shadow-2xl backdrop-blur-md">
+      <div className="flex items-center gap-3 mb-2">
+        <span className="text-xl">📊</span>
+        <h2 className="text-lg font-bold text-slate-100">Excel Data Pipeline Simulator</h2>
       </div>
-      <p className="text-xs text-gray-600 mb-6">
+      <p className="text-xs text-slate-400 mb-5">
         Input manual row data to simulate an enterprise Excel sheet fetch pipeline.
       </p>
-      
-      <form onSubmit={handleTriggerAutomation} className="space-y-4 text-xs">
+
+      <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="patientName" className="block font-medium text-gray-700 mb-1">
+          <label className="block text-xs font-medium text-slate-300 mb-1.5">
             Patient Name
           </label>
-          <input 
-            id="patientName"
-            type="text" 
-            name="patientName"
-            value={excelRow.patientName} 
-            onChange={handleInputChange}
-            className="w-full rounded-md border-gray-300 p-2 border focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none" 
+          <input
+            type="text"
+            value={patientName}
+            onChange={(e) => setPatientName(e.target.value)}
+            className="w-full px-3.5 py-2.5 bg-[#070A12] border border-slate-700 rounded-xl text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-150"
             placeholder="John Doe"
           />
         </div>
 
         <div>
-          <label htmlFor="insuranceId" className="block font-medium text-gray-700 mb-1">
+          <label className="block text-xs font-medium text-slate-300 mb-1.5">
             Insurance Policy ID
           </label>
-          <input 
-            id="insuranceId"
-            type="text" 
-            name="insuranceId"
-            value={excelRow.insuranceId} 
-            onChange={handleInputChange}
-            className="w-full rounded-md border-gray-300 p-2 border focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none font-mono" 
+          <input
+            type="text"
+            value={policyId}
+            onChange={(e) => setPolicyId(e.target.value)}
+            className="w-full px-3.5 py-2.5 bg-[#070A12] border border-slate-700 rounded-xl text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-150"
             placeholder="BCBS-987654"
           />
         </div>
 
         <div>
-          <label htmlFor="authType" className="block font-medium text-gray-700 mb-1">
+          <label className="block text-xs font-medium text-slate-300 mb-1.5">
             Authorization Type
           </label>
-          <select 
-            id="authType"
-            name="authType"
-            value={excelRow.authType}
-            onChange={handleInputChange}
-            className="w-full rounded-md border-gray-300 p-2 border bg-white focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
+          <select
+            value={authType}
+            onChange={(e) => setAuthType(e.target.value)}
+            className="w-full px-3.5 py-2.5 bg-[#070A12] border border-slate-700 rounded-xl text-slate-100 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-150"
           >
             <option value="Prior Auth">Prior Auth</option>
             <option value="Retro Auth">Retro Auth</option>
-            <option value="Re-auth">Re-auth</option>
+            <option value="Pre-Determination">Pre-Determination</option>
           </select>
         </div>
 
-        <button 
+        {/* Glow Action Button (Screenshot Style) */}
+        <button
           type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-4 rounded transition duration-150 text-xs shadow-sm active:scale-[0.99] mt-2"
+          className="w-full mt-2 py-3 px-4 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-blue-600 via-indigo-600 to-indigo-500 hover:from-blue-500 hover:to-indigo-500 shadow-[0_0_25px_rgba(99,102,241,0.45)] hover:shadow-[0_0_35px_rgba(99,102,241,0.65)] transition-all duration-200 active:scale-[0.99] flex items-center justify-center gap-2"
         >
-          ⚡ Simulate One-Click Fax Auto-Fill
+          <span>⚡</span>
+          <span>Simulate One-Click Fax Auto-Fill</span>
         </button>
       </form>
     </div>
   );
 }
+
