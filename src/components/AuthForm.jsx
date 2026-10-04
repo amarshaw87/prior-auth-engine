@@ -1,120 +1,64 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useAuthAutomation } from '../context/AuthContext';
 
 export default function AuthForm() {
-  // Pulling the new updateAuthModifiers function to handle instant data updates
-  const { activeAuthData, updateAuthModifiers } = useAuthAutomation();
-  
-  // Local state to manage live document overrides
-  const [overrideData, setOverrideData] = useState({
-    authStatus: 'Pending Review',
-    clinicalNotes: '',
-    denialReason: 'None'
-  });
-
-  // Track a unique record ID so the form inputs don't auto-wipe when you click save
-  const activeRecordId = activeAuthData?.id || activeAuthData?.claimId || activeAuthData?.patientName; 
-
-  // Effect hook to sync local modifiers ONLY when switching to a completely different record
-  useEffect(() => {
-    if (activeAuthData) {
-      setOverrideData({
-        authStatus: activeAuthData.authStatus || 'Pending Review',
-        clinicalNotes: activeAuthData.clinicalNotes || '',
-        denialReason: activeAuthData.denialReason || 'None'
-      });
-    }
-  }, [activeRecordId]); 
+  const { activeAuthData, updateAuthField } = useAuthAutomation();
 
   if (!activeAuthData) return null;
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setOverrideData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  // Pushing the modified details back up into the global context pipeline safely
-  const handleApplyChanges = (e) => {
-    e.preventDefault();
-    const updatedPayload = {
-      ...activeAuthData,
-      denialReason: overrideData.denialReason,
-      authStatus: overrideData.authStatus,
-      clinicalNotes: overrideData.clinicalNotes
-    };
-    
-    // Using the instantaneous modifier function instead of triggering the slow loading delay
-    updateAuthModifiers(updatedPayload);
-  };
-
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md border border-orange-200 max-w-xl mx-auto mt-6">
-      <div className="flex items-center gap-2 mb-3">
-        <span className="flex h-2 w-2 rounded-full bg-orange-500 animate-pulse"></span>
-        <h3 className="text-lg font-bold text-gray-800">🛠️ RCM Workstation Overrides</h3>
+    <div className="bg-[#0E1424]/90 border border-slate-800/80 rounded-2xl p-6 shadow-2xl backdrop-blur-md">
+      <div className="flex items-center gap-3 mb-2">
+        <span className="text-xl">⚙️</span>
+        <h2 className="text-lg font-bold text-slate-100">RCM Workstation Overrides</h2>
       </div>
-      <p className="text-xs text-gray-600 mb-4">
+      <p className="text-xs text-slate-400 mb-5">
         Modify structural tracking parameters dynamically before finalizing the insurance fax payload.
       </p>
 
-      <form onSubmit={handleApplyChanges} className="space-y-4 text-xs">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label htmlFor="authStatus" className="block font-medium text-gray-700 mb-1">
-              Authorization Tracking Status
-            </label>
-            <select
-              id="authStatus"
-              name="authStatus"
-              value={overrideData.authStatus}
-              onChange={handleInputChange}
-              className="w-full rounded-md border-gray-300 p-2 border bg-white focus:ring-1 focus:ring-orange-500 focus:border-orange-500 outline-none"
-            >
-              <option value="Pending Review">⌛ Pending Review</option>
-              <option value="Approved / Secured">✅ Approved / Secured</option>
-              <option value="Retro Active Applied">⚡ Retro Active Applied</option>
-              <option value="TFL Exceeded / Denied">❌ TFL Exceeded / Denied</option>
-            </select>
-          </div>
-
-          <div>
-            <label htmlFor="denialReason" className="block font-medium text-gray-700 mb-1">
-              Active Denial Context
-            </label>
-            <input
-              id="denialReason"
-              type="text"
-              name="denialReason"
-              value={overrideData.denialReason}
-              onChange={handleInputChange}
-              className="w-full rounded-md border-gray-300 p-2 border focus:ring-1 focus:ring-orange-500 focus:border-orange-500 outline-none"
-              placeholder="e.g., Missing Clinicals"
-            />
-          </div>
+      <div className="space-y-4">
+        <div>
+          <label className="block text-xs font-medium text-slate-300 mb-1.5">
+            Authorization Tracking Status
+          </label>
+          <select
+            value={activeAuthData.trackingStatus || 'Pending Review'}
+            onChange={(e) => updateAuthField('trackingStatus', e.target.value)}
+            className="w-full px-3.5 py-2.5 bg-[#070A12] border border-slate-700 rounded-xl text-amber-400 font-medium text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+          >
+            <option value="Pending Review">Pending Review</option>
+            <option value="Approved">Approved</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Denied">Denied</option>
+          </select>
         </div>
 
         <div>
-          <label htmlFor="clinicalNotes" className="block font-medium text-gray-700 mb-1">
-            Clinical Override & Audit Notes
+          <label className="block text-xs font-medium text-slate-300 mb-1.5">
+            Active Denial Context
           </label>
-          <textarea
-            id="clinicalNotes"
-            name="clinicalNotes"
-            value={overrideData.clinicalNotes}
-            onChange={handleInputChange}
-            rows="3"
-            className="w-full rounded-md border-gray-300 p-2 border font-mono focus:ring-1 focus:ring-orange-500 focus:border-orange-500 outline-none"
-            placeholder="Enter workflow updates or retro-auth authorization reference hashes..."
+          <input
+            type="text"
+            value={activeAuthData.denialContext || ''}
+            onChange={(e) => updateAuthField('denialContext', e.target.value)}
+            placeholder="None"
+            className="w-full px-3.5 py-2.5 bg-[#070A12] border border-slate-700 rounded-xl text-slate-200 placeholder-slate-500 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
           />
         </div>
 
-        <button
-          type="submit"
-          className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2.5 px-4 rounded transition duration-150 text-xs shadow-sm active:scale-[0.99]"
-        >
-          🔄 Apply Modifiers to Live Fax Template
-        </button>
-      </form>
+        <div>
+          <label className="block text-xs font-medium text-slate-300 mb-1.5">
+            Clinical Override & Audit Notes
+          </label>
+          <textarea
+            rows="3"
+            value={activeAuthData.clinicalNotes || ''}
+            onChange={(e) => updateAuthField('clinicalNotes', e.target.value)}
+            placeholder="Enter workflow updates or retro-authorization reference hashes..."
+            className="w-full px-3.5 py-2.5 bg-[#070A12] border border-slate-700 rounded-xl text-slate-200 placeholder-slate-500 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 resize-none"
+          />
+        </div>
+      </div>
     </div>
   );
 }
