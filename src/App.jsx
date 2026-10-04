@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client'; // <-- ADDED FOR MOUNT PIPELINE
 import { AuthAutomationProvider, useAuthAutomation } from './context/AuthContext';
 import useFaxFetch from './hooks/useFaxFetch'; 
 import ExcelForm from './components/ExcelForm';
@@ -57,7 +56,6 @@ function Workspace() {
 }
 
 // Core wrapper linking everything to your context blueprint
-// Core wrapper linking everything to your context blueprint
 export default function App() {
   return (
     <AuthAutomationProvider>
@@ -66,13 +64,4 @@ export default function App() {
   );
 }
 
-// FIX: Initialize the React DOM mounting layer safely with a null-check
-const container = document.getElementById('root');
-if (container) {
-  ReactDOM.createRoot(container).render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  );
-}
 
