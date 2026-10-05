@@ -91,11 +91,13 @@ npm install
 npm run dev
 ```
 
+### 👨‍💻 Designed & Developed by
+
+## Amar Shaw
+
+**Prior Authorization & RCM Specialist • Full-Stack Web Developer**
+
+> Transforming US Healthcare Operational Friction into High-Velocity Web Automation.
 
 
 
-<h2>👨‍💻 DESIGNED & DEVELOPED BY</h2>
-​<h1>Amar Shaw</h1>
-​<h3>Prior Authorization & RCM Specialist • Full-Stack Web Developer</h3>
-​<br />
-​Transforming US Healthcare Operational Friction into High-Velocity Web Automation.
