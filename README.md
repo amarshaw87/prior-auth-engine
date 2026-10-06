@@ -93,7 +93,13 @@ npm run dev
 
 ---
 
+### ⚖️ License
+
+Distributed under the **MIT License**. See `LICENSE` for more information.
+
 ## 👨‍💻 Designed & Developed by
+
+---
 
 **Amar Shaw**  
 *Prior Authorization & RCM Specialist • Full-Stack Web Developer*  
